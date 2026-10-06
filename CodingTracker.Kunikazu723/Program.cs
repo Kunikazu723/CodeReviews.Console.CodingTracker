@@ -9,8 +9,8 @@ namespace CodingTracker.Kunikazu723
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
-                
 
+            Console.WriteLine($"Date Format = {configuration["DateFormat"]}");
         }
     }
 }
