@@ -7,10 +7,19 @@ namespace CodingTracker.Kunikazu723
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            Console.WriteLine($"Date Format = {configuration["DateFormat"]}");
+            string databasePath = configuration["DatabasePath"] 
+                ?? throw new InvalidOperationException("DatabasePath is missing from appsettings.json");
+
+            string connectionString = configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection String not found in appsettings.json");
+
+            string dateTimeFormat = configuration["DateTimeFormat"]
+                ?? throw new InvalidOperationException("DateTime Format not found in appsettings.json");
+
+            
         }
     }
 }
