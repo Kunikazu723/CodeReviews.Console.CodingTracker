@@ -5,6 +5,11 @@ namespace CodingTracker.Kunikazu723
 {
     public class UserInterface
     {
+        private readonly UserInput _userInput;
+        public UserInterface(UserInput userInput)
+        {
+            _userInput = userInput;
+        }
         public void MainMenu()
         {
             WriteBanner();
