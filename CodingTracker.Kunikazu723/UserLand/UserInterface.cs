@@ -3,7 +3,7 @@ using Spectre.Console;
 using System.Reflection;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
-namespace CodingTracker.Kunikazu723
+namespace CodingTracker.Kunikazu723.UserLand
 {
     public class UserInterface
     {
@@ -21,6 +21,7 @@ namespace CodingTracker.Kunikazu723
             bool isRunning = true;
             while (isRunning)
             {
+                Console.Clear();
                 MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
                 switch (option)
                 {
@@ -58,11 +59,6 @@ namespace CodingTracker.Kunikazu723
             AnsiConsole.Write(new Rule().RuleStyle(Style.Parse("blue dim")));
             AnsiConsole.Write(appFiglet);
             AnsiConsole.Write(new Rule().RuleStyle(Style.Parse("blue dim")));
-        }
-
-        public void PromptUserMenuOption()
-        {
-
         }
     }
 }

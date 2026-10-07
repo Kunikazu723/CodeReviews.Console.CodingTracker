@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CodingTracker.Kunikazu723.Dao;
+using CodingTracker.Kunikazu723.Models;
+using CodingTracker.Kunikazu723.UserLand;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +11,16 @@ namespace CodingTracker.Kunikazu723.Services
 {
     internal class CodeSessionService : IService
     {
+        private readonly IDao<CodingSession> _sessionDao;
+        private readonly UserInput _userInput;
+        public CodeSessionService(IDao<CodingSession> sessionDao, UserInput userInput)
+        {
+            _sessionDao = sessionDao;
+            _userInput = userInput;
+        }
         public void AddItem()
         {
+
             throw new NotImplementedException();
         }
 

@@ -1,4 +1,7 @@
-﻿using CodingTracker.Kunikazu723.Services;
+﻿using CodingTracker.Kunikazu723.Dao;
+using CodingTracker.Kunikazu723.Models;
+using CodingTracker.Kunikazu723.Services;
+using CodingTracker.Kunikazu723.UserLand;
 using Microsoft.Extensions.Configuration;
 namespace CodingTracker.Kunikazu723
 {
@@ -20,8 +23,10 @@ namespace CodingTracker.Kunikazu723
             string dateTimeFormat = configuration["DateTimeFormat"]
                 ?? throw new InvalidOperationException("DateTime Format not found in appsettings.json");
 
-            var userInput = new UserInput();
-            var codeSessionService = new CodeSessionService();
+            var validation = new Validation();
+            var userInput = new UserInput(dateTimeFormat, validation);
+            IDao<CodingSession> codingSessionDao = new CodingSessionDao();
+            var codeSessionService = new CodeSessionService(codingSessionDao, userInput);
             var userInterface = new UserInterface(userInput, codeSessionService);
             userInterface.MainMenu();
         }
