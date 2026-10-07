@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CodingTracker.Kunikazu723.Services;
+using Microsoft.Extensions.Configuration;
 namespace CodingTracker.Kunikazu723
 {
     internal class Program
@@ -18,8 +19,10 @@ namespace CodingTracker.Kunikazu723
 
             string dateTimeFormat = configuration["DateTimeFormat"]
                 ?? throw new InvalidOperationException("DateTime Format not found in appsettings.json");
+
             var userInput = new UserInput();
-            var userInterface = new UserInterface(userInput);
+            var codeSessionService = new CodeSessionService();
+            var userInterface = new UserInterface(userInput, codeSessionService);
             userInterface.MainMenu();
         }
     }

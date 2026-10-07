@@ -7,9 +7,11 @@ namespace CodingTracker.Kunikazu723
     public class UserInterface
     {
         private readonly UserInput _userInput;
-        public UserInterface(UserInput userInput)
+        private readonly IService _service;
+        public UserInterface(UserInput userInput, IService service)
         {
             _userInput = userInput;
+            _service = service;
         }
         public void MainMenu()
         {
