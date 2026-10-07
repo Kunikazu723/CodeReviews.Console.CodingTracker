@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Kunikazu723.Dao;
 using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.UserLand;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,15 @@ namespace CodingTracker.Kunikazu723.Services
         }
         public void AddItem()
         {
+            (string startTime, string endTime) = _userInput.GetStartEndDate();
 
-            throw new NotImplementedException();
+            var codingSession = new CodingSession()
+            {
+                StartTime = startTime,
+                EndTime = endTime
+            };
+
+            _sessionDao.InsertItem(codingSession);
         }
 
         public void DeleteItem()
