@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using System.Reflection;
+using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
 namespace CodingTracker.Kunikazu723
 {
@@ -14,10 +15,11 @@ namespace CodingTracker.Kunikazu723
         {
             WriteBanner();
             // Main Loop
-
+            MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
 
             Console.ReadKey();
         }
+
         public void WriteBanner(string bannerText = "CODING TRACKER")
         {
             var figletFont = FigletFont.Load("./FigletFonts/smkeyboard.flf");
