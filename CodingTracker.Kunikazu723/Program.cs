@@ -19,7 +19,8 @@ namespace CodingTracker.Kunikazu723
             string dateTimeFormat = configuration["DateTimeFormat"]
                 ?? throw new InvalidOperationException("DateTime Format not found in appsettings.json");
 
-            
+            var userInterface = new UserInterface();
+            userInterface.MainMenu();
         }
     }
 }
