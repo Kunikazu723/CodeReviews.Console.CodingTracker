@@ -3,7 +3,7 @@ using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
 namespace CodingTracker.Kunikazu723
 {
-    internal class UserInput
+    public class UserInput
     {
         public T PromptUserEnumOption<T>() where T: struct, Enum
         {
