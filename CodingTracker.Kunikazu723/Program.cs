@@ -23,8 +23,8 @@ namespace CodingTracker.Kunikazu723
             string dateTimeFormat = configuration["DateTimeFormat"]
                 ?? throw new InvalidOperationException("DateTime Format not found in appsettings.json");
 
-            var validation = new Validation();
-            var userInput = new UserInput(dateTimeFormat, validation);
+            var validation = new Validation(dateTimeFormat);
+            var userInput = new UserInput(validation);
             IDao<CodingSession> codingSessionDao = new CodingSessionDao();
             var codeSessionService = new CodeSessionService(codingSessionDao, userInput);
             var userInterface = new UserInterface(userInput, codeSessionService);

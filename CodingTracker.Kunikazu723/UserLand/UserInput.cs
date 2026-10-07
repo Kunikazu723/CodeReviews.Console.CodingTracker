@@ -6,11 +6,9 @@ namespace CodingTracker.Kunikazu723.UserLand
 {
     public class UserInput
     {
-        private readonly string _dateTimeFormat;
         private readonly Validation _validation;
-        public UserInput(string dateTimeFormat, Validation validation)
+        public UserInput(Validation validation)
         {
-            _dateTimeFormat = dateTimeFormat;
             _validation = validation;
         }
         public T PromptUserEnumOption<T>() where T: struct, Enum
@@ -26,16 +24,47 @@ namespace CodingTracker.Kunikazu723.UserLand
             return new CodingSession();
         }
 
-        public string? GetDateTime()
+        public string GetDateTime()
         {
-            string date = AnsiConsole.Ask<string>("Enter the date in the format [bold yellow]dd-MM-yyyy[/]");
-            string time = AnsiConsole.Ask<string>("Enter the time in the format HH-mm-ss");
-            string userDateTime = date + '-' + time;
-            if (_validation.IsDateTimeValid(userDateTime, _dateTimeFormat))
+            // The service should make validation decisions, not the UseriNput class. Since the Service is the business logic and will decide what goes where and how. UserInput should be limited to atomic methods.
+            while (true)
             {
-                return userDateTime;
+                string date = AnsiConsole.Ask<string>("Enter the date in the format [bold yellow]dd-MM-yyyy[/]");
+                string time = AnsiConsole.Ask<string>("Enter the time in the format HH-mm-ss");
+                string userDateTime = date + '-' + time;
+                if (_validation.IsDateTimeValidFormat(userDateTime, out _))
+                {
+                    return userDateTime;
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid Input[/]");
+                }
             }
-            return null;
+        }
+
+        public (string StartTime, string EndTime) GetStartEndDate()
+        {
+            while (true)
+            {
+                AnsiConsole.MarkupLine("[bold yellow]Start Time[/]");
+                string startTime = GetDateTime();
+
+
+                Console.WriteLine();
+
+                AnsiConsole.MarkupLine("[bold yellow]End Time[/]");
+                string endTime = GetDateTime();
+
+                if (_validation.AreDatesChronological(startTime, endTime))
+                {
+                    return (startTime, endTime);
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]End Time is earlier than Start Time");
+                }
+            }
         }
     }
 }
