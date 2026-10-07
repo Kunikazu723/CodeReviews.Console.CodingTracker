@@ -62,7 +62,7 @@ namespace CodingTracker.Kunikazu723.UserLand
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine("[bold red]End Time is earlier than Start Time");
+                    AnsiConsole.MarkupLine("[bold red]Invalid Input: End Time is earlier than Start Time[/]");
                 }
             }
         }
