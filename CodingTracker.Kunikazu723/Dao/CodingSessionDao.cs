@@ -22,7 +22,11 @@ namespace CodingTracker.Kunikazu723.Dao
 
         public List<CodingSession> GetAllItems()
         {
-            throw new NotImplementedException();
+            using var connection = new SQLiteConnection(_connectionString);
+            string sql = """
+                SELECT * FROM CodingSessions
+                """;
+            return connection.Query<CodingSession>(sql).ToList();
         }
 
         public void InsertItem(CodingSession item)
