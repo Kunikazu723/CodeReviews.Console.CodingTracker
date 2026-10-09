@@ -59,13 +59,13 @@ namespace CodingTracker.Kunikazu723.Seeders
             {
                 throw new ArgumentException("range cannot be lesser than 1");
             }
-
+            int randomNumber = _rng.Next(1, range);
             return rangeType switch 
             { 
-                TimeType.Day => startDate.AddDays(_rng.Next(range)),
-                TimeType.Hour => startDate.AddHours(_rng.Next(range)),
-                TimeType.Minute => startDate.AddMinutes(_rng.Next(range)),
-                TimeType.Second => startDate.AddSeconds(_rng.Next(range)),
+                TimeType.Day => startDate.AddDays(randomNumber),
+                TimeType.Hour => startDate.AddHours(randomNumber),
+                TimeType.Minute => startDate.AddMinutes(randomNumber),
+                TimeType.Second => startDate.AddSeconds(randomNumber),
                 _ => throw new NotImplementedException()
             };
         }
