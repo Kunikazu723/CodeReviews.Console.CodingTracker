@@ -28,11 +28,14 @@ namespace CodingTracker.Kunikazu723
             var dbInitializer = new DatabaseInitializer(connectionString);
             dbInitializer.Initialize();
 
-            IDao<CodingSession> codingSessionDao = new CodingSessionDao();
+            IDao<CodingSession> codingSessionDao = new CodingSessionDao(connectionString);
             var codingSessionSeeder = new CodingSessionSeeder(codingSessionDao, dateTimeFormat);
             codingSessionSeeder.SeedIfEmpty();
 
-            var codeSessionService = new CodeSessionService(codingSessionDao, userInput);
+            var validation = new Validation(dateTimeFormat);
+            var userInput = new UserInput(validation);
+
+            var codeSessionService = new CodeSessionService(codingSessionDao, userInput, dateTimeFormat);
             var userInterface = new UserInterface(userInput, codeSessionService);
             userInterface.MainMenu();
         }
