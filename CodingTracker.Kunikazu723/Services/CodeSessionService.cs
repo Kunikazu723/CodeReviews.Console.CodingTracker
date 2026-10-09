@@ -1,4 +1,4 @@
-﻿using CodingTracker.Kunikazu723.Dao;
+﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.UserLand;
 using Spectre.Console;
