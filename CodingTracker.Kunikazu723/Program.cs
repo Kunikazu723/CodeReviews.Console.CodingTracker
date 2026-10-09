@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Kunikazu723.Dao;
+using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.Services;
 using CodingTracker.Kunikazu723.UserLand;
