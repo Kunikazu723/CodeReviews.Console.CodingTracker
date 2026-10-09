@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Kunikazu723.Dao;
 using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
+using CodingTracker.Kunikazu723.Seeders;
 using CodingTracker.Kunikazu723.Services;
 using CodingTracker.Kunikazu723.UserLand;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,11 @@ namespace CodingTracker.Kunikazu723
 
             var validation = new Validation(dateTimeFormat);
             var userInput = new UserInput(validation);
+
             IDao<CodingSession> codingSessionDao = new CodingSessionDao();
+            var codingSessionSeeder = new CodingSessionSeeder(codingSessionDao, dateTimeFormat);
+            codingSessionSeeder.SeedIfEmpty();
+
             var codeSessionService = new CodeSessionService(codingSessionDao, userInput);
             var userInterface = new UserInterface(userInput, codeSessionService);
             userInterface.MainMenu();
