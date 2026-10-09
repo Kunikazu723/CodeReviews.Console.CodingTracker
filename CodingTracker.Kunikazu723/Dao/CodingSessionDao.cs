@@ -1,4 +1,5 @@
-﻿using CodingTracker.Kunikazu723.Models;
+﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
+using CodingTracker.Kunikazu723.Models;
 
 namespace CodingTracker.Kunikazu723.Dao
 {
@@ -15,6 +16,11 @@ namespace CodingTracker.Kunikazu723.Dao
         }
 
         public void InsertItem(CodingSession item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertMany(List<CodingSession> collection)
         {
             throw new NotImplementedException();
         }
