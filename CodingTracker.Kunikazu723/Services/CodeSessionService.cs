@@ -25,8 +25,9 @@ namespace CodingTracker.Kunikazu723.Services
 
         public Table GenerateCodingSessionsTable(List<CodingSession> codingSessions)
         {
+            string durationFormat = @"hh\:mm\:ss";
             var table = new Table().Title("Coding Sessions");
-            table.AddColumns("Id", "Start Time", "End Time", "Duration (hh:mm:ss)");
+            table.AddColumns("Id", "Start Time", "End Time", $"Duration ({durationFormat})");
             foreach (CodingSession codingSession in codingSessions)
             {
                 try
@@ -34,7 +35,7 @@ namespace CodingTracker.Kunikazu723.Services
                     DateTime parsedStartTime = ParseStringTime(codingSession.StartTime);
                     DateTime parsedEndTime = ParseStringTime(codingSession.EndTime);
                     TimeSpan duration = (parsedEndTime - parsedStartTime);
-                    table.AddRow(codingSession.Id.ToString(), codingSession.StartTime, codingSession.EndTime, duration.ToString(@"hh\:mm\:ss"));
+                    table.AddRow(codingSession.Id.ToString(), codingSession.StartTime, codingSession.EndTime, duration.ToString(durationFormat));
 
                 }
                 catch (ArgumentException ex)
