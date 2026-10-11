@@ -91,8 +91,23 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void DeleteSession()
         {
-            int id = PromptForSessionId(Color.Red, "Delete Session");
-            _dao.DeleteItemById(id);
+            WriteBanner(Color.Red, "Delete Session");
+            var codingSession = PromptForExistingSession();
+            if (codingSession is null) return;
+
+            Table sessionTable = _service.GenerateCodingSessionsTable(new List<CodingSession> {codingSession}, "To be Deleted");
+            AnsiConsole.Write(sessionTable);
+
+            bool confirmDeletion = AnsiConsole.Confirm("Are you sure you wish to delete permanently this session?");
+            if (confirmDeletion)
+            {
+                _dao.DeleteItemById(codingSession);
+                DisplayMessage("Session Deleted successfully", Color.Green);
+            }
+            else
+            {
+                DisplayMessage("Deletion aborted", Color.Green);
+            }
         }
 
         private void UpdateSession()
