@@ -33,6 +33,15 @@ namespace CodingTracker.Kunikazu723.Dao
             return connection.Query<CodingSession>(sql).ToList();
         }
 
+        public CodingSession? GetItemById(int id)
+        {
+            using var connection = new SQLiteConnection(_connectionString);
+            var sql = """
+                SELECT * FROM CodingSessions WHERE Id = @itemId
+                """;
+            return connection.QuerySingleOrDefault<CodingSession>(sql, new { itemId = id });
+        }
+
         public void InsertItem(CodingSession item)
         {
             using var connection = new SQLiteConnection(_connectionString);
