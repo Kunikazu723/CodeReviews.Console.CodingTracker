@@ -23,12 +23,11 @@ namespace CodingTracker.Kunikazu723.UserLand
         }
         public void MainMenu()
         {
-            WriteBanner();
-            // Main Loop
             bool isRunning = true;
             while (isRunning)
             {
                 Console.Clear();
+                WriteBanner();
                 MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
                 switch (option)
                 {
