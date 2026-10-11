@@ -15,7 +15,7 @@ namespace CodingTracker.Kunikazu723.Dao
             _connectionString = connectionString;
         }
 
-        public void DeleteItemById(int id)
+        public void DeleteItemById(CodingSession codingSession)
         {
             throw new NotImplementedException();
         }
@@ -51,7 +51,7 @@ namespace CodingTracker.Kunikazu723.Dao
             transaction.Commit();
         }
 
-        public void UpdateItemById(int id)
+        public void UpdateItemById(CodingSession newItem)
         {
             throw new NotImplementedException();
         }
