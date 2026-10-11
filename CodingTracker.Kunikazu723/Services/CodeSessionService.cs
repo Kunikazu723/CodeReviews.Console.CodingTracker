@@ -60,7 +60,7 @@ namespace CodingTracker.Kunikazu723.Services
 
                 } catch (ArgumentException ex)
                 {
-                    AnsiConsole.MarkupLine($"[bold red]WARNING: \t{ex.Message}");
+                    AnsiConsole.MarkupLine($"[bold red]WARNING: \t{ex.Message} at session with ID {codingSession.Id}[/]");
                 }
                 
             }
