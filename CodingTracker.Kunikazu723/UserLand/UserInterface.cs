@@ -73,7 +73,6 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private int PromptForSessionId()
         {
-            WriteBanner(Color.Red, "Delete Session");
             ViewSessions();
             return _userInput.AskUserForPositiveInteger("Enter the Session's ID");
         }
