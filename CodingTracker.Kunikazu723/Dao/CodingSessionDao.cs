@@ -17,7 +17,11 @@ namespace CodingTracker.Kunikazu723.Dao
 
         public void DeleteItemById(CodingSession codingSession)
         {
-            throw new NotImplementedException();
+            using var connection = new SQLiteConnection(_connectionString);
+            var sql = """
+                DELETE FROM CodingSessions WHERE Id = @Id
+                """;
+            connection.Execute(sql, codingSession);
         }
 
         public List<CodingSession> GetAllItems()
