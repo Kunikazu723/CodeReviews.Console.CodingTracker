@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodingTracker.Kunikazu723.Dao.Interfaces
 {
-    internal interface IDao<T> where T : class
+    public interface IDao<T> where T : class
     {
         List<T> GetAllItems();
         void InsertItem(T item);

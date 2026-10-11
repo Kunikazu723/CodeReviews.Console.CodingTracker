@@ -6,7 +6,7 @@ using System.Data.SQLite;
 
 namespace CodingTracker.Kunikazu723.Dao
 {
-    internal class CodingSessionDao : IDao<CodingSession>
+    public class CodingSessionDao : IDao<CodingSession>
     {
         private readonly string _connectionString;
 
