@@ -78,6 +78,17 @@ namespace CodingTracker.Kunikazu723.UserLand
             return _userInput.AskUserForPositiveInteger("Enter the Session's ID");
         }
 
+        private CodingSession? PromptForExistingSession()
+        {
+            int id = PromptForSessionId();
+            var codingSession = _dao.GetItemById(id);
+            if (codingSession is null)
+            {
+                DisplayMessage($"Coding Session With ID {id} not found\nAborting process", Color.Red);
+            }
+            return codingSession;
+        }
+
         private void DeleteSession()
         {
             int id = PromptForSessionId(Color.Red, "Delete Session");
