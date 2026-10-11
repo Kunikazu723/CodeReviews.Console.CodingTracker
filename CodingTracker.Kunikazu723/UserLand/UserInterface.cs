@@ -93,13 +93,8 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void LogSession()
         {
-            (string startTime, string endTime) = _userInput.GetStartEndDate();
-
-            var codingSession = new CodingSession()
-            {
-                StartTime = startTime,
-                EndTime = endTime
-            };
+            WriteBanner(Color.Yellow, "Log Session");
+            var codingSession = _userInput.GetUserCodingSession();
 
             _dao.InsertItem(codingSession);
         }
