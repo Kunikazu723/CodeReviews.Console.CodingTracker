@@ -26,7 +26,6 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         public string GetDateTime()
         {
-            // The service should make validation decisions, not the UseriNput class. Since the Service is the business logic and will decide what goes where and how. UserInput should be limited to atomic methods.
             while (true)
             {
                 string date = AnsiConsole.Ask<string>("Enter the date in the format [bold yellow]dd-MM-yyyy[/]");
@@ -49,7 +48,6 @@ namespace CodingTracker.Kunikazu723.UserLand
             {
                 AnsiConsole.MarkupLine("[bold yellow]Start Time[/]");
                 string startTime = GetDateTime();
-
 
                 Console.WriteLine();
 
