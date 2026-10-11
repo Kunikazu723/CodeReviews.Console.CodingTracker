@@ -31,7 +31,11 @@ namespace CodingTracker.Kunikazu723.Dao
 
         public void InsertItem(CodingSession item)
         {
-            throw new NotImplementedException();
+            using var connection = new SQLiteConnection(_connectionString);
+            var sql = """
+                INSERT INTO CodingSessions (StartTime, EndTime) VALUES (@StartTime, @EndTime)
+                """;
+            connection.Execute(sql, item);
         }
 
         public void InsertMany(List<CodingSession> collection)
