@@ -36,7 +36,6 @@ namespace CodingTracker.Kunikazu723.UserLand
                     ExecuteOption(option);
                 } catch (SQLiteException ex)
                 {
-                    // TODO: Make specific messages for error code (Like 'invalid ID' for a specific error code)
                     DisplayMessage($"DATABASE ERROR: \n\t{ex.Message}", Color.Red);
                 }
                 if (option == MainMenuOptions.Exit)
