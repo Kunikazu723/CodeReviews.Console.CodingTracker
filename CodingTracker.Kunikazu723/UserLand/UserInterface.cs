@@ -1,5 +1,9 @@
-﻿using CodingTracker.Kunikazu723.Services;
+﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
+using CodingTracker.Kunikazu723.Models;
+using CodingTracker.Kunikazu723.Services;
+using Microsoft.VisualBasic;
 using Spectre.Console;
+using System.Globalization;
 using System.Reflection;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
@@ -8,11 +12,14 @@ namespace CodingTracker.Kunikazu723.UserLand
     public class UserInterface
     {
         private readonly UserInput _userInput;
-        private readonly IService _service;
-        public UserInterface(UserInput userInput, IService service)
+        private readonly CodeSessionService _service;
+        private readonly IDao<CodingSession> _dao;
+
+        public UserInterface(UserInput userInput, CodeSessionService service, IDao<CodingSession> dao)
         {
             _userInput = userInput;
             _service = service;
+            _dao = dao;
         }
         public void MainMenu()
         {
@@ -26,16 +33,16 @@ namespace CodingTracker.Kunikazu723.UserLand
                 switch (option)
                 {
                     case MainMenuOptions.ViewSessions:
-                        _service.ViewAllItems();
+                        ViewSessions();
                         break;
                     case MainMenuOptions.LogSessions:
-                        _service.AddItem();
+                        LogSession();
                         break;
                     case MainMenuOptions.UpdateSession:
-                        _service.UpdateItem();
+                        UpdateSession();
                         break;
                     case MainMenuOptions.DeleteSession:
-                        _service.DeleteItem();
+                        DeleteSession();
                         break;
                     case MainMenuOptions.Exit:
                         AnsiConsole.MarkupLine("Exiting [bold cyan]Coding Tracker[/]...");
@@ -44,10 +51,39 @@ namespace CodingTracker.Kunikazu723.UserLand
                     default:
                         break;
                 }
-
+                AnsiConsole.MarkupLine("[bold grey]Press Any Key To Continue[/]");
                 Console.ReadKey();
             }
             
+        }
+
+        private void DeleteSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LogSession()
+        {
+            (string startTime, string endTime) = _userInput.GetStartEndDate();
+
+            var codingSession = new CodingSession()
+            {
+                StartTime = startTime,
+                EndTime = endTime
+            };
+
+            _dao.InsertItem(codingSession);
+        }
+
+        private void ViewSessions()
+        {
+            var sessionsTable = _service.GenerateCodingSessionsTable(_dao.GetAllItems());
+            AnsiConsole.Write(sessionsTable);
         }
 
         public void WriteBanner(string bannerText = "CODING TRACKER")

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CodingTracker.Kunikazu723.Services
 {
-    internal class CodeSessionService : IService
+    public class CodeSessionService 
     {
         private readonly IDao<CodingSession> _sessionDao;
         private readonly UserInput _userInput;
@@ -22,33 +22,11 @@ namespace CodingTracker.Kunikazu723.Services
             _userInput = userInput;
             _dateFormat = dateFormat;
         }
-        public void AddItem()
+
+        public Table GenerateCodingSessionsTable(List<CodingSession> codingSessions)
         {
-            (string startTime, string endTime) = _userInput.GetStartEndDate();
-
-            var codingSession = new CodingSession()
-            {
-                StartTime = startTime,
-                EndTime = endTime
-            };
-
-            _sessionDao.InsertItem(codingSession);
-        }
-
-        public void DeleteItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ViewAllItems()
-        {
-            List<CodingSession> codingSessions = _sessionDao.GetAllItems();
-            // TODO: Instead of displaying it here in the service. Make the service create a table that will be presented at the UserInterface.
+            var table = new Table().Title("Coding Sessions");
+            table.AddColumns("Id", "Start Time", "End Time", "Duration (hh:mm:ss)");
             foreach (CodingSession codingSession in codingSessions)
             {
                 try
@@ -56,14 +34,16 @@ namespace CodingTracker.Kunikazu723.Services
                     DateTime parsedStartTime = ParseStringTime(codingSession.StartTime);
                     DateTime parsedEndTime = ParseStringTime(codingSession.EndTime);
                     TimeSpan duration = (parsedEndTime - parsedStartTime);
-                    Console.WriteLine($"ID: {codingSession.Id} Start: {codingSession.StartTime} End: {codingSession.EndTime} Duration: {duration.Hours} hours {duration.Minutes} minutes and {duration.Seconds} seconds");
+                    table.AddRow(codingSession.Id.ToString(), codingSession.StartTime, codingSession.EndTime, duration.ToString(@"hh\:mm\:ss"));
 
-                } catch (ArgumentException ex)
-                {
-                    AnsiConsole.MarkupLine($"[bold red]WARNING: \t{ex.Message} at session with ID {codingSession.Id}[/]");
                 }
-                
+                catch (ArgumentException ex)
+                {
+                    AnsiConsole.MarkupLine($"[bold red]WARNING: session with ID: {codingSession.Id} \t{ex.Message}[/]");
+                }
+
             }
+            return table;
         }
 
         private DateTime ParseStringTime(string time)
