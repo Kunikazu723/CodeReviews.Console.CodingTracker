@@ -66,7 +66,13 @@ namespace CodingTracker.Kunikazu723.Dao
 
         public void UpdateItemById(CodingSession newItem)
         {
-            throw new NotImplementedException();
+            using var connection = new SQLiteConnection(_connectionString);
+            var sql = """
+                UPDATE CodingSessions
+                SET StartTime = @StartTime, EndTime = @EndTime
+                WHERE Id = @Id
+                """;
+            connection.Execute(sql, newItem);
         }
     }
 }
