@@ -111,8 +111,32 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void UpdateSession()
         {
-            int id = PromptForSessionId(Color.Cyan, "Update Session");
-            _dao.UpdateItemById(id);
+            WriteBanner(Color.Cyan, "Update Session");
+            var currentCodingSession = PromptForExistingSession();
+
+            if (currentCodingSession is null) return;
+
+            Table currentItemTable = _service.GenerateCodingSessionsTable(new List<CodingSession> { currentCodingSession }, "Current Coding Session");
+            AnsiConsole.Write(currentItemTable);
+
+            AnsiConsole.MarkupLine("[bold yellow]Enter new Coding Sessino Data[/]");
+            var newCodingSession = _userInput.GetUserCodingSession();
+            newCodingSession.Id = currentCodingSession.Id;
+
+            Table newItemTable = _service.GenerateCodingSessionsTable(new List<CodingSession> { newCodingSession }, "Updated Coding Session");
+            AnsiConsole.Write(newItemTable);
+
+            bool confirmUpdate = AnsiConsole.Confirm("Do you wish to apply the Update?", false);
+
+            if (confirmUpdate)
+            {
+                _dao.UpdateItemById(newCodingSession);
+                DisplayMessage("Coding session updated successfuly", Color.Green);
+            }
+            else
+            {
+                DisplayMessage("Update Aborted. No changes made.", Color.Green);
+            }
         }
 
         private void LogSession()
