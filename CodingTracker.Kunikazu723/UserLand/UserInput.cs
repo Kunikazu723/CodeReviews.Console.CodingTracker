@@ -32,7 +32,14 @@ namespace CodingTracker.Kunikazu723.UserLand
         }
         public CodingSession GetUserCodingSession()
         {
-            return new CodingSession();
+            (string startTime, string endTime) = GetStartEndDate();
+
+            var codingSession = new CodingSession()
+            {
+                StartTime = startTime,
+                EndTime = endTime
+            };
+            return codingSession;
         }
 
         public string GetDateTime()
