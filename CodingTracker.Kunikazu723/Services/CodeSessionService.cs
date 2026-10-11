@@ -23,10 +23,13 @@ namespace CodingTracker.Kunikazu723.Services
             _dateFormat = dateFormat;
         }
 
-        public Table GenerateCodingSessionsTable(List<CodingSession> codingSessions)
+        public Table GenerateCodingSessionsTable(List<CodingSession> codingSessions, string? tableTitle = null)
         {
             string durationFormat = @"hh\:mm\:ss";
-            var table = new Table().Title("Coding Sessions");
+            var table = new Table();
+            if (tableTitle is not null) 
+                table.Title(tableTitle);
+
             table.AddColumns("Id", "Start Time", "End Time", $"Duration ({durationFormat})");
             foreach (CodingSession codingSession in codingSessions)
             {

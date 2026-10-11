@@ -11,6 +11,17 @@ namespace CodingTracker.Kunikazu723.UserLand
         {
             _validation = validation;
         }
+
+        public int AskUserForPositiveInteger(string prompt)
+        {
+            while (true)
+            {
+                int input = AnsiConsole.Ask<int>(prompt);
+                if (input > 0) 
+                    return input;
+            }
+        }
+
         public T PromptUserEnumOption<T>() where T: struct, Enum
         {
             return AnsiConsole.Prompt(

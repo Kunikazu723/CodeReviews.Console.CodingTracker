@@ -3,6 +3,7 @@ using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.Services;
 using Microsoft.VisualBasic;
 using Spectre.Console;
+using System.Data.SQLite;
 using System.Globalization;
 using System.Reflection;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
@@ -27,8 +28,9 @@ namespace CodingTracker.Kunikazu723.UserLand
             while (isRunning)
             {
                 Console.Clear();
-                WriteBanner();
+                WriteBanner(Color.Blue);
                 MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
+                Console.Clear();
                 switch (option)
                 {
                     case MainMenuOptions.ViewSessions:
@@ -56,14 +58,28 @@ namespace CodingTracker.Kunikazu723.UserLand
             
         }
 
+        private void ExecuteOption(MainMenuOptions option)
+        {
+
+        }
+
+        private int PromptForSessionId(Color bannerColor, string bannerTitle)
+        {
+            WriteBanner(Color.Red, "Delete Session");
+            ViewSessions();
+            return _userInput.AskUserForPositiveInteger("Enter the Session's ID");
+        }
+
         private void DeleteSession()
         {
-            throw new NotImplementedException();
+            int id = PromptForSessionId(Color.Red, "Delete Session");
+            _dao.DeleteItemById(id);
         }
 
         private void UpdateSession()
         {
-            throw new NotImplementedException();
+            int id = PromptForSessionId(Color.Cyan, "Update Session");
+            _dao.UpdateItemById(id);
         }
 
         private void LogSession()
@@ -81,19 +97,25 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void ViewSessions()
         {
-            var sessionsTable = _service.GenerateCodingSessionsTable(_dao.GetAllItems());
+            var sessionsTable = _service.GenerateCodingSessionsTable(_dao.GetAllItems(), "Coding Sessions");
             AnsiConsole.Write(sessionsTable);
         }
 
-        public void WriteBanner(string bannerText = "CODING TRACKER")
+        public void WriteBanner(Color color, string bannerText = "CODING TRACKER")
         {
             var figletFont = FigletFont.Load("./FigletFonts/smkeyboard.flf");
-            var appFiglet = new FigletText(figletFont, "CODING TRACKER")
-                .Color(Color.Blue);
+            var appFiglet = new FigletText(figletFont, bannerText)
+                .Color(color);
 
-            AnsiConsole.Write(new Rule().RuleStyle(Style.Parse("blue dim")));
+            var ruleStyle = Style.Parse(color.ToMarkup());
+            AnsiConsole.Write(new Rule().RuleStyle(ruleStyle));
             AnsiConsole.Write(appFiglet);
-            AnsiConsole.Write(new Rule().RuleStyle(Style.Parse("blue dim")));
+            AnsiConsole.Write(new Rule().RuleStyle(ruleStyle));
+        }
+
+        void DisplayMessage(string message, Color color)
+        {
+            AnsiConsole.MarkupLine($"[{color.ToMarkup()}]{Markup.Escape(message)}[/]");
         }
     }
 }
