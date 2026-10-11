@@ -97,7 +97,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             Table sessionTable = _service.GenerateCodingSessionsTable(new List<CodingSession> {codingSession}, "To be Deleted");
             AnsiConsole.Write(sessionTable);
 
-            bool confirmDeletion = AnsiConsole.Confirm("Are you sure you wish to delete permanently this session?");
+            bool confirmDeletion = AnsiConsole.Confirm("Are you sure you wish to delete permanently this session?", false);
             if (confirmDeletion)
             {
                 _dao.DeleteItemById(codingSession);
@@ -145,6 +145,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             var codingSession = _userInput.GetUserCodingSession();
 
             _dao.InsertItem(codingSession);
+            DisplayMessage("New coding session Successfuly Logged", Color.Green);
         }
 
         private void ViewSessions()
