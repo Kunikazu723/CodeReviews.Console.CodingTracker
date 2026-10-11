@@ -31,27 +31,17 @@ namespace CodingTracker.Kunikazu723.UserLand
                 WriteBanner(Color.Blue);
                 MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
                 Console.Clear();
-                switch (option)
+                try
                 {
-                    case MainMenuOptions.ViewSessions:
-                        ViewSessions();
-                        break;
-                    case MainMenuOptions.LogSessions:
-                        LogSession();
-                        break;
-                    case MainMenuOptions.UpdateSession:
-                        UpdateSession();
-                        break;
-                    case MainMenuOptions.DeleteSession:
-                        DeleteSession();
-                        break;
-                    case MainMenuOptions.Exit:
-                        AnsiConsole.MarkupLine("Exiting [bold cyan]Coding Tracker[/]...");
-                        isRunning = false;
-                        break;
-                    default:
-                        break;
+                    ExecuteOption(option);
+                } catch (SQLiteException ex)
+                {
+                    // TODO: Make specific messages for error code (Like 'invalid ID' for a specific error code)
+                    DisplayMessage($"DATABASE ERROR: \n\t{ex.Message}", Color.Red);
                 }
+                if (option == MainMenuOptions.Exit)
+                    isRunning = false;
+
                 AnsiConsole.MarkupLine("[bold grey]Press Any Key To Continue[/]");
                 Console.ReadKey();
             }
@@ -60,7 +50,26 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void ExecuteOption(MainMenuOptions option)
         {
-
+            switch (option)
+            {
+                case MainMenuOptions.ViewSessions:
+                    ViewSessions();
+                    break;
+                case MainMenuOptions.LogSessions:
+                    LogSession();
+                    break;
+                case MainMenuOptions.UpdateSession:
+                    UpdateSession();
+                    break;
+                case MainMenuOptions.DeleteSession:
+                    DeleteSession();
+                    break;
+                case MainMenuOptions.Exit:
+                    AnsiConsole.MarkupLine("Exiting [bold cyan]Coding Tracker[/]...");
+                    break;
+                default:
+                    break;
+            }
         }
 
         private int PromptForSessionId(Color bannerColor, string bannerTitle)
