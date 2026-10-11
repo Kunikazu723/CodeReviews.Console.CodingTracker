@@ -4,12 +4,12 @@ namespace CodingTracker.Kunikazu723.UserLand
 {
     public class Validation
     {
-        private readonly string _dateFormat;
+        public readonly string DateFormat;
         public Validation(string dateFormat)
         {
-            _dateFormat = dateFormat;
+            DateFormat = dateFormat;
         }
-        public bool IsDateTimeValidFormat(string date, out DateTime parsedDate) => DateTime.TryParseExact(date, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate);
+        public bool IsDateTimeValidFormat(string date, out DateTime parsedDate) => DateTime.TryParseExact(date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate);
         public bool AreDatesChronological(string startTime, string endTime)
         {
             DateTime parsedStartTime;

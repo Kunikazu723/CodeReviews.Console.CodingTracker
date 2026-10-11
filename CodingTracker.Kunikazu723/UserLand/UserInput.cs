@@ -28,12 +28,10 @@ namespace CodingTracker.Kunikazu723.UserLand
         {
             while (true)
             {
-                string date = AnsiConsole.Ask<string>("Enter the date in the format [bold yellow]dd-MM-yyyy[/]");
-                string time = AnsiConsole.Ask<string>("Enter the time in the format HH-mm-ss");
-                string userDateTime = date + '-' + time;
-                if (_validation.IsDateTimeValidFormat(userDateTime, out _))
+                string date = AnsiConsole.Ask<string>($"Enter the date in the format [bold yellow]{_validation.DateFormat}[/]");
+                if (_validation.IsDateTimeValidFormat(date, out _))
                 {
-                    return userDateTime;
+                    return date;
                 }
                 else
                 {
