@@ -43,6 +43,7 @@ namespace CodingTracker.Kunikazu723.Services
             return table;
         }
 
+
         private DateTime ParseStringTime(string time)
         {
             DateTime result;
