@@ -8,11 +8,9 @@ namespace CodingTracker.Kunikazu723.Services
 {
     public class CodeSessionService 
     {
-        private readonly IDao<CodingSession> _sessionDao;
         private readonly string _dateFormat;
-        public CodeSessionService(IDao<CodingSession> sessionDao, string dateFormat)
+        public CodeSessionService(string dateFormat)
         {
-            _sessionDao = sessionDao;
             _dateFormat = dateFormat;
         }
 
@@ -42,7 +40,6 @@ namespace CodingTracker.Kunikazu723.Services
             }
             return table;
         }
-
 
         private DateTime ParseStringTime(string time)
         {
