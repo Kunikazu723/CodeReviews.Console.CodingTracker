@@ -46,7 +46,6 @@ namespace CodingTracker.Kunikazu723.UserLand
             }
             
         }
-
         private void ExecuteOption(MainMenuOptions option)
         {
             switch (option)
@@ -67,6 +66,7 @@ namespace CodingTracker.Kunikazu723.UserLand
                     AnsiConsole.MarkupLine("Exiting [bold cyan]Coding Tracker[/]...");
                     break;
                 default:
+                    DisplayMessage("Invalid Option", Color.Red);
                     break;
             }
         }
