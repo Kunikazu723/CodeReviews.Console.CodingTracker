@@ -2,24 +2,17 @@
 using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.UserLand;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodingTracker.Kunikazu723.Services
 {
     public class CodeSessionService 
     {
         private readonly IDao<CodingSession> _sessionDao;
-        private readonly UserInput _userInput;
         private readonly string _dateFormat;
-        public CodeSessionService(IDao<CodingSession> sessionDao, UserInput userInput, string dateFormat)
+        public CodeSessionService(IDao<CodingSession> sessionDao, string dateFormat)
         {
             _sessionDao = sessionDao;
-            _userInput = userInput;
             _dateFormat = dateFormat;
         }
 
