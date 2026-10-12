@@ -6,10 +6,10 @@ using System.Globalization;
 
 namespace CodingTracker.Kunikazu723.Services
 {
-    public class CodeSessionService 
+    public class TableEngine 
     {
         private readonly string _dateFormat;
-        public CodeSessionService(string dateFormat)
+        public TableEngine(string dateFormat)
         {
             _dateFormat = dateFormat;
         }

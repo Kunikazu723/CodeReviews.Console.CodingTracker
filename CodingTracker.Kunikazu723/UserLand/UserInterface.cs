@@ -13,13 +13,13 @@ namespace CodingTracker.Kunikazu723.UserLand
     public class UserInterface
     {
         private readonly UserInput _userInput;
-        private readonly CodeSessionService _service;
+        private readonly TableEngine _tableEngine;
         private readonly IDao<CodingSession> _dao;
 
-        public UserInterface(UserInput userInput, CodeSessionService service, IDao<CodingSession> dao)
+        public UserInterface(UserInput userInput, TableEngine engine, IDao<CodingSession> dao)
         {
             _userInput = userInput;
-            _service = service;
+            _tableEngine = engine;
             _dao = dao;
         }
         public void MainMenu()
@@ -94,7 +94,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             var codingSession = PromptForExistingSession();
             if (codingSession is null) return;
 
-            Table sessionTable = _service.GenerateCodingSessionsTable(new List<CodingSession> {codingSession}, "To be Deleted");
+            Table sessionTable = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession> {codingSession}, "To be Deleted");
             AnsiConsole.Write(sessionTable);
 
             bool confirmDeletion = AnsiConsole.Confirm("Are you sure you wish to delete permanently this session?", false);
@@ -116,14 +116,14 @@ namespace CodingTracker.Kunikazu723.UserLand
 
             if (currentCodingSession is null) return;
 
-            Table currentItemTable = _service.GenerateCodingSessionsTable(new List<CodingSession> { currentCodingSession }, "Current Coding Session");
+            Table currentItemTable = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession> { currentCodingSession }, "Current Coding Session");
             AnsiConsole.Write(currentItemTable);
 
             AnsiConsole.MarkupLine("[bold yellow]Enter new Coding Sessino Data[/]");
             var newCodingSession = _userInput.GetUserCodingSession();
             newCodingSession.Id = currentCodingSession.Id;
 
-            Table newItemTable = _service.GenerateCodingSessionsTable(new List<CodingSession> { newCodingSession }, "Updated Coding Session");
+            Table newItemTable = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession> { newCodingSession }, "Updated Coding Session");
             AnsiConsole.Write(newItemTable);
 
             bool confirmUpdate = AnsiConsole.Confirm("Do you wish to apply the Update?", false);
@@ -150,7 +150,7 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void ViewSessions()
         {
-            var sessionsTable = _service.GenerateCodingSessionsTable(_dao.GetAllItems(), "Coding Sessions");
+            var sessionsTable = _tableEngine.GenerateCodingSessionsTable(_dao.GetAllItems(), "Coding Sessions");
             AnsiConsole.Write(sessionsTable);
         }
 
