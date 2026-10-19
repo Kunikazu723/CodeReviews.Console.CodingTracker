@@ -1,11 +1,8 @@
 ﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
 using CodingTracker.Kunikazu723.Services;
-using Microsoft.VisualBasic;
 using Spectre.Console;
 using System.Data.SQLite;
-using System.Globalization;
-using System.Reflection;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
 namespace CodingTracker.Kunikazu723.UserLand

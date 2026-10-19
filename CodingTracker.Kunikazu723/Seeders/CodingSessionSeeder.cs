@@ -1,12 +1,5 @@
-﻿using CodingTracker.Kunikazu723.Dao;
-using CodingTracker.Kunikazu723.Dao.Interfaces;
+﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using static CodingTracker.Kunikazu723.Enums.DateEnums;
 
 namespace CodingTracker.Kunikazu723.Seeders

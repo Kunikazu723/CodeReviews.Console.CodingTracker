@@ -1,6 +1,5 @@
 ﻿using CodingTracker.Kunikazu723.Dao.Interfaces;
 using CodingTracker.Kunikazu723.Models;
-using CodingTracker.Kunikazu723.Seeders;
 using Dapper;
 using System.Data.SQLite;
 
