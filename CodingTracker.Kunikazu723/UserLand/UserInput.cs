@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Kunikazu723.Models;
 using Spectre.Console;
+using System.Diagnostics;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
 
 namespace CodingTracker.Kunikazu723.UserLand
@@ -79,6 +80,22 @@ namespace CodingTracker.Kunikazu723.UserLand
                     AnsiConsole.MarkupLine("[bold red]Invalid Input: End Time is earlier than Start Time[/]");
                 }
             }
+        }
+
+        public (string StartTime, string EndTime) GetStartEndDateViaStopwatch()
+        {
+            
+            var stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+            
+            DateTime startTime = DateTime.Now;
+            AnsiConsole.MarkupLine("[bold yellow]Stopwatch Initiated[/]\n[grey]Press Any Key to stop it[/]");
+            Console.ReadKey();
+            
+            stopwatch.Stop();
+
+            return (startTime.ToString(_validation.DateFormat), (startTime + stopwatch.Elapsed).ToString(_validation.DateFormat));
         }
     }
 }
