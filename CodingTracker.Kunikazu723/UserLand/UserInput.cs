@@ -31,9 +31,9 @@ namespace CodingTracker.Kunikazu723.UserLand
                 .AddChoices(Enum.GetValues<T>())
                 .UseConverter(OptionToString));
         }
-        public CodingSession GetUserCodingSession()
+        public CodingSession GetUserCodingSession(bool useStopwatch = false)
         {
-            (string startTime, string endTime) = GetStartEndDate();
+            (string startTime, string endTime) = useStopwatch ? GetStartEndDateViaStopwatch() : GetStartEndDate();
 
             var codingSession = new CodingSession()
             {
