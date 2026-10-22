@@ -36,7 +36,7 @@ namespace CodingTracker.Kunikazu723.UserLand
                     if (ex.ErrorCode == 19)
                     {
                         DisplayMessage($"ERROR: Date is already exists in database. Insertion aborted", Color.Red);
-                }
+                    }
                     else
                     {
                         DisplayMessage($"DATABASE ERROR: \n\t{ex.Message}\nERROR CODE: {ex.ErrorCode}", Color.Red);
@@ -146,10 +146,25 @@ namespace CodingTracker.Kunikazu723.UserLand
         private void LogSession()
         {
             WriteBanner(Color.Yellow, "Log Session");
-            var codingSession = _userInput.GetUserCodingSession();
 
-            _dao.InsertItem(codingSession);
-            DisplayMessage("New coding session Successfuly Logged", Color.Green);
+            bool useStopwatch = AnsiConsole.Confirm("Use stopwatch to track current session in real time?");
+
+            var codingSession = _userInput.GetUserCodingSession(useStopwatch);
+
+            var toBeInsertedDisplay = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession>() { codingSession }, "To Be Inserted");
+            AnsiConsole.Write(toBeInsertedDisplay);
+
+            bool confirmInsertion = AnsiConsole.Confirm("[bold yellow]Do you wish to Log the current session?[/]");
+            if (confirmInsertion)
+            {
+                _dao.InsertItem(codingSession);
+                DisplayMessage("New coding session Successfuly Logged", Color.Green);
+            }
+            else
+            {
+                DisplayMessage("Insertion aborted, no changes made", Color.Green);
+            }
+
         }
 
         private void ViewSessions()
