@@ -33,7 +33,14 @@ namespace CodingTracker.Kunikazu723.UserLand
                     ExecuteOption(option);
                 } catch (SQLiteException ex)
                 {
-                    DisplayMessage($"DATABASE ERROR: \n\t{ex.Message}", Color.Red);
+                    if (ex.ErrorCode == 19)
+                    {
+                        DisplayMessage($"ERROR: Date is already exists in database. Insertion aborted", Color.Red);
+                }
+                    else
+                    {
+                        DisplayMessage($"DATABASE ERROR: \n\t{ex.Message}\nERROR CODE: {ex.ErrorCode}", Color.Red);
+                    }
                 }
                 if (option == MainMenuOptions.Exit)
                     isRunning = false;
