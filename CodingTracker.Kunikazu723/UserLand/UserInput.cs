@@ -33,7 +33,7 @@ namespace CodingTracker.Kunikazu723.UserLand
         }
         public CodingSession GetUserCodingSession(bool useStopwatch = false)
         {
-            (string startTime, string endTime) = useStopwatch ? GetStartEndDateViaStopwatch() : GetStartEndDate();
+            (DateTime startTime, DateTime endTime) = useStopwatch ? GetStartEndDateViaStopwatch() : GetStartEndDate();
 
             var codingSession = new CodingSession()
             {
@@ -43,14 +43,15 @@ namespace CodingTracker.Kunikazu723.UserLand
             return codingSession;
         }
 
-        public string GetDateTime()
+        public DateTime GetDateTime()
         {
             while (true)
             {
                 string date = AnsiConsole.Ask<string>($"Enter the date in the format [bold yellow]{_validation.DateFormat}[/]");
-                if (_validation.IsDateTimeValidFormat(date, out _))
+                DateTime parsedDate;
+                if (_validation.IsDateTimeValidFormat(date, out parsedDate))
                 {
-                    return date;
+                    return parsedDate;
                 }
                 else
                 {
@@ -59,17 +60,17 @@ namespace CodingTracker.Kunikazu723.UserLand
             }
         }
 
-        public (string StartTime, string EndTime) GetStartEndDate()
+        public (DateTime StartTime, DateTime EndTime) GetStartEndDate()
         {
             while (true)
             {
                 AnsiConsole.MarkupLine("[bold yellow]Start Time[/]");
-                string startTime = GetDateTime();
+                DateTime startTime = GetDateTime();
 
                 Console.WriteLine();
 
                 AnsiConsole.MarkupLine("[bold yellow]End Time[/]");
-                string endTime = GetDateTime();
+                DateTime endTime = GetDateTime();
 
                 if (_validation.AreDatesChronological(startTime, endTime))
                 {
@@ -82,7 +83,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             }
         }
 
-        public (string StartTime, string EndTime) GetStartEndDateViaStopwatch()
+        public (DateTime StartTime, DateTime EndTime) GetStartEndDateViaStopwatch()
         {
             
             var stopwatch = new Stopwatch();
@@ -95,7 +96,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             
             stopwatch.Stop();
 
-            return (startTime.ToString(_validation.DateFormat), (startTime + stopwatch.Elapsed).ToString(_validation.DateFormat));
+            return (startTime, (startTime + stopwatch.Elapsed));
         }
     }
 }

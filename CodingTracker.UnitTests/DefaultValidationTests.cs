@@ -12,6 +12,12 @@ namespace CodingTracker.UnitTests
             _validation = new Validation("dd-MM-yyyy-HH-mm-ss");
         }
 
+        private DateTime Parse(string input)
+        {
+            Assert.That(_validation.IsDateTimeValidFormat(input, out var date), Is.True, $"Test data '{input}' should be valid");
+            return date;
+        }
+
         [TestCase("22-10-2026-14-30-45", TestName = "Typical date")]
         [TestCase("01-01-2026-00-00-00", TestName = "Start of year, midnight")]
         [TestCase("31-12-2026-23-59-59", TestName = "End of year, last second")]
@@ -20,7 +26,6 @@ namespace CodingTracker.UnitTests
         [TestCase("30-04-2026-10-10-10", TestName = "30-day month, day 30")]
         public void IsDateTimeValidFormat_CorrectFormat_ReturnsTrue(string inputDate)
         {
-
             bool isValid = _validation.IsDateTimeValidFormat(inputDate, out _);
             Assert.That(isValid, Is.True);
         }
@@ -65,7 +70,7 @@ namespace CodingTracker.UnitTests
         [TestCase("31-12-2026-23-59-59", "01-01-2027-00-00-01", TestName = "Crosses year boundary")]
         public void AreDatesChronological_ValidInput_ReturnsTrue(string start, string end)
         {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.True);
+            Assert.That(_validation.AreDatesChronological(Parse(start), Parse(end)), Is.True);
         }
 
         [TestCase("22-10-2026-15-30-00", "22-10-2026-14-00-00", TestName = "End before start")]
@@ -73,25 +78,24 @@ namespace CodingTracker.UnitTests
         [TestCase("22-10-2026-14-00-00", "22-10-2026-14-00-00", TestName = "Equal times")]
         public void AreDatesChronological_EndNotAfterStart_ReturnsFalse(string start, string end)
         {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.False);
-        }
-
-        [TestCase("garbage", "22-10-2026-15-00-00", TestName = "Invalid start")]
-        [TestCase("22-10-2026-14-00-00", "garbage", TestName = "Invalid end")]
-        [TestCase("", "", TestName = "Both empty")]
-        public void AreDatesChronological_InvalidFormat_ReturnsFalse(string start, string end)
-        {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.False);
+            Assert.That(_validation.AreDatesChronological(Parse(start), Parse(end)), Is.False);
         }
     }
 
     public class IsoValidationTests
     {
         private Validation _validation = null!;
+
         [SetUp]
         public void SetUp()
         {
             _validation = new Validation("yyyy-MM-dd'T'HH:mm:ss");
+        }
+
+        private DateTime Parse(string input)
+        {
+            Assert.That(_validation.IsDateTimeValidFormat(input, out var date), Is.True, $"Test data '{input}' should be valid");
+            return date;
         }
 
         // Valid inputs
@@ -143,13 +147,12 @@ namespace CodingTracker.UnitTests
             Assert.That(isValid, Is.False);
         }
 
-
         [TestCase("2026-10-22T14:00:00", "2026-10-22T15:30:00", TestName = "Same day, end later")]
         [TestCase("2026-10-22T23:00:00", "2026-10-23T01:00:00", TestName = "Crosses midnight")]
         [TestCase("2026-12-31T23:59:59", "2027-01-01T00:00:01", TestName = "Crosses year boundary")]
         public void AreDatesChronological_ValidInput_ReturnsTrue(string start, string end)
         {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.True);
+            Assert.That(_validation.AreDatesChronological(Parse(start), Parse(end)), Is.True);
         }
 
         [TestCase("2026-10-22T15:30:00", "2026-10-22T14:00:00", TestName = "End before start")]
@@ -157,15 +160,7 @@ namespace CodingTracker.UnitTests
         [TestCase("2026-10-22T14:00:00", "2026-10-22T14:00:00", TestName = "Equal times")]
         public void AreDatesChronological_EndNotAfterStart_ReturnsFalse(string start, string end)
         {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.False);
-        }
-
-        [TestCase("garbage", "2026-10-22T15:00:00", TestName = "Invalid start")]
-        [TestCase("2026-10-22T14:00:00", "garbage", TestName = "Invalid end")]
-        [TestCase("", "", TestName = "Both empty")]
-        public void AreDatesChronological_InvalidFormat_ReturnsFalse(string start, string end)
-        {
-            Assert.That(_validation.AreDatesChronological(start, end), Is.False);
+            Assert.That(_validation.AreDatesChronological(Parse(start), Parse(end)), Is.False);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace CodingTracker.Kunikazu723.Dao
             connection.Execute("""
                 INSERT INTO CodingSessions (StartTime, EndTime)
                 VALUES (@StartTime, @EndTime)
-                """, collection);
+                """, collection, transaction);
             transaction.Commit();
         }
 

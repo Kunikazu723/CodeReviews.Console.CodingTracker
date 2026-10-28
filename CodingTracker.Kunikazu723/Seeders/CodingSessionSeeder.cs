@@ -9,7 +9,6 @@ namespace CodingTracker.Kunikazu723.Seeders
         private readonly IDao<CodingSession> _dao;
         private readonly string _dateFormat;
         private readonly Random _rng = new Random();
-        private readonly List<DateTime> _unavailableDates = new List<DateTime>();
         public CodingSessionSeeder(IDao<CodingSession> dao, string dateFormat)
         {
             _dao = dao;
@@ -27,20 +26,20 @@ namespace CodingTracker.Kunikazu723.Seeders
         private List<CodingSession> GenerateData()
         {
             var data = new List<CodingSession>();
-            DateTime sessionDate = new DateTime(2025, 01, 01);
+            DateTime initialDate = new DateTime(2025, 01, 01);
             for (int i = 0; i < 100; i++)
             {
-                DateTime startTime = GenerateDate(sessionDate, 12, TimeType.Hour);
+                DateTime startTime = GenerateDate(initialDate, 12, TimeType.Hour);
                 DateTime endTime = GenerateDate(startTime, 5, TimeType.Hour);
 
                 data.Add(
                     new CodingSession() 
                     {
-                        StartTime = startTime.ToString(_dateFormat),
-                        EndTime = endTime.ToString(_dateFormat),
+                        StartTime = startTime,
+                        EndTime = endTime,
                     });
 
-                sessionDate = GenerateDate(endTime, 7, TimeType.Day);
+                initialDate = GenerateDate(endTime, 7, TimeType.Day);
             }
 
             return data;

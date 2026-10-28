@@ -26,10 +26,8 @@ namespace CodingTracker.Kunikazu723.Services
             {
                 try
                 {
-                    DateTime parsedStartTime = ParseStringTime(codingSession.StartTime);
-                    DateTime parsedEndTime = ParseStringTime(codingSession.EndTime);
-                    TimeSpan duration = (parsedEndTime - parsedStartTime);
-                    table.AddRow(codingSession.Id.ToString(), codingSession.StartTime, codingSession.EndTime, duration.ToString(durationFormat));
+                    TimeSpan duration = (codingSession.EndTime - codingSession.StartTime);
+                    table.AddRow(codingSession.Id.ToString(), codingSession.StartTime.ToString(_dateFormat), codingSession.EndTime.ToString(_dateFormat), duration.ToString(durationFormat));
 
                 }
                 catch (ArgumentException ex)

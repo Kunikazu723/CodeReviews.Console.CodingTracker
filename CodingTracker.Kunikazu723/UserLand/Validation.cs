@@ -10,16 +10,6 @@ namespace CodingTracker.Kunikazu723.UserLand
             DateFormat = dateFormat;
         }
         public bool IsDateTimeValidFormat(string date, out DateTime parsedDate) => DateTime.TryParseExact(date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate);
-        public bool AreDatesChronological(string startTime, string endTime)
-        {
-            DateTime parsedStartTime;
-            DateTime parsedEndTime;
-            if (!IsDateTimeValidFormat(startTime, out parsedStartTime) || !IsDateTimeValidFormat(endTime, out parsedEndTime))
-            {
-                return false;
-            }
-
-            return parsedEndTime > parsedStartTime;
-        }
+        public bool AreDatesChronological(DateTime startTime, DateTime endTime) => endTime > startTime;
     }
 }
