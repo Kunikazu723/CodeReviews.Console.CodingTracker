@@ -36,7 +36,7 @@ namespace CodingTracker.Kunikazu723
             var userInput = new UserInput(validation);
 
             var tableEngine = new TableEngine(dateTimeFormat);
-            var userInterface = new UserInterface(userInput, tableEngine, codingSessionDao);
+            var userInterface = new UserInterface(userInput, tableEngine, codingSessionDao, dateTimeFormat);
             userInterface.MainMenu();
         }
     }

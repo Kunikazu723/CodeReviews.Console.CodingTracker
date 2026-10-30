@@ -23,11 +23,11 @@ namespace CodingTracker.Kunikazu723.UserLand
             }
         }
 
-        public T PromptUserEnumOption<T>() where T: struct, Enum
+        public T PromptUserEnumOption<T>(string prompt) where T: struct, Enum
         {
             return AnsiConsole.Prompt(
                 new SelectionPrompt<T>()
-                .Title("What do you want to do?")
+                .Title($"[bold yellow]{prompt}[/]")
                 .AddChoices(Enum.GetValues<T>())
                 .UseConverter(OptionToString));
         }

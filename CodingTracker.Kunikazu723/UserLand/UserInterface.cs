@@ -4,6 +4,7 @@ using CodingTracker.Kunikazu723.Services;
 using Spectre.Console;
 using System.Data.SQLite;
 using static CodingTracker.Kunikazu723.Enums.MenuEnums;
+using static CodingTracker.Kunikazu723.Enums.Filters;
 
 namespace CodingTracker.Kunikazu723.UserLand
 {
@@ -12,12 +13,14 @@ namespace CodingTracker.Kunikazu723.UserLand
         private readonly UserInput _userInput;
         private readonly TableEngine _tableEngine;
         private readonly IDao<CodingSession> _dao;
+        private readonly string _dateFormat = string.Empty;
 
-        public UserInterface(UserInput userInput, TableEngine engine, IDao<CodingSession> dao)
+        public UserInterface(UserInput userInput, TableEngine engine, IDao<CodingSession> dao, string dateFormat)
         {
             _userInput = userInput;
             _tableEngine = engine;
             _dao = dao;
+            _dateFormat = dateFormat;
         }
         public void MainMenu()
         {
@@ -26,12 +29,13 @@ namespace CodingTracker.Kunikazu723.UserLand
             {
                 Console.Clear();
                 WriteBanner(Color.Blue);
-                MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>();
+                MainMenuOptions option = _userInput.PromptUserEnumOption<MainMenuOptions>("What do you want to do?");
                 Console.Clear();
                 try
                 {
                     ExecuteOption(option);
-                } catch (SQLiteException ex)
+                }
+                catch (SQLiteException ex)
                 {
                     if (ex.ErrorCode == 19)
                     {
@@ -48,7 +52,7 @@ namespace CodingTracker.Kunikazu723.UserLand
                 AnsiConsole.MarkupLine("[bold grey]Press Any Key To Continue[/]");
                 Console.ReadKey();
             }
-            
+
         }
         private void ExecuteOption(MainMenuOptions option)
         {
@@ -98,7 +102,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             var codingSession = PromptForExistingSession();
             if (codingSession is null) return;
 
-            Table sessionTable = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession> {codingSession}, "To be Deleted");
+            Table sessionTable = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession> { codingSession }, "To be Deleted");
             AnsiConsole.Write(sessionTable);
 
             bool confirmDeletion = AnsiConsole.Confirm("Are you sure you wish to delete permanently this session?", false);
@@ -169,8 +173,48 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void ViewSessions()
         {
-            var sessionsTable = _tableEngine.GenerateCodingSessionsTable(_dao.GetAllItems(), "Coding Sessions");
+            var doApplyFilter = AnsiConsole.Confirm("[bold yellow]Apply Filter?[/]", false);
+            var codingSessions = _dao.GetAllItems().OrderBy(codingSession => codingSession.StartTime).ToList();
+            if (doApplyFilter)
+            {
+                codingSessions = FilterCodingSessions(codingSessions);
+            }
+
+            var sessionsTable = _tableEngine.GenerateCodingSessionsTable(codingSessions, "Coding Sessions");
             AnsiConsole.Write(sessionsTable);
+
+        }
+
+        private List<CodingSession> FilterCodingSessions(List<CodingSession> codingSessions)
+        {
+            var filterType = _userInput.PromptUserEnumOption<FilterType>("[bold yellow]Select Paremeter[/]");
+
+            var amount = _userInput.AskUserForPositiveInteger($"[bold yellow]Enter how many {filterType} before today {DateTime.Today.ToString(_dateFormat)}[/]");
+
+            var today = DateTime.Today;
+            
+            var lowestDate = filterType switch
+            {
+                FilterType.Days => today.AddDays(-amount),
+                FilterType.Weeks => today.AddDays(-amount * 7),
+                FilterType.Months => today.AddMonths(-amount),
+                FilterType.Years => today.AddYears(-amount),
+                _ => throw new NotImplementedException()
+            };
+
+            var filteredCodingSessions = codingSessions
+                .Where(codingSession => codingSession.StartTime >= lowestDate);
+
+            var filterOrder = _userInput.PromptUserEnumOption<FilterOrder>("[bold yellow]Select Order[/]");
+
+            filteredCodingSessions = filterOrder switch
+            {
+                FilterOrder.Ascending => filteredCodingSessions.OrderBy(codingSession => codingSession.StartTime),
+                FilterOrder.Descending => filteredCodingSessions.OrderByDescending(codingSession => codingSession.StartTime),
+                _ => throw new NotImplementedException()
+            };
+
+            return filteredCodingSessions.ToList();
         }
 
         public void WriteBanner(Color color, string bannerText = "CODING TRACKER")
