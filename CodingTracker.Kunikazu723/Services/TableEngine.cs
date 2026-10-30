@@ -38,15 +38,5 @@ namespace CodingTracker.Kunikazu723.Services
             }
             return table;
         }
-
-        private DateTime ParseStringTime(string time)
-        {
-            DateTime result;
-            if (!DateTime.TryParseExact(time, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
-            {
-                throw new ArgumentException($"Time String {time} does not follow proper date format {_dateFormat}");
-            }
-            return result;
-        }
     }
 }
