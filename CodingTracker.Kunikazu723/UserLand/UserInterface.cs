@@ -79,22 +79,7 @@ namespace CodingTracker.Kunikazu723.UserLand
             }
         }
 
-        private int PromptForSessionId()
-        {
-            ViewSessions();
-            return _userInput.AskUserForPositiveInteger("Enter the Session's ID");
-        }
-
-        private CodingSession? PromptForExistingSession()
-        {
-            int id = PromptForSessionId();
-            var codingSession = _dao.GetItemById(id);
-            if (codingSession is null)
-            {
-                DisplayMessage($"Coding Session With ID {id} not found\nAborting process", Color.Red);
-            }
-            return codingSession;
-        }
+        
 
         private void DeleteSession()
         {
@@ -115,6 +100,30 @@ namespace CodingTracker.Kunikazu723.UserLand
             {
                 DisplayMessage("Deletion aborted", Color.Green);
             }
+        }
+
+        private int PromptForSessionId()
+        {
+            ViewSessions();
+            return _userInput.AskUserForPositiveInteger("Enter the Session's ID");
+        }
+
+        private CodingSession? PromptForExistingSession()
+        {
+            int id = PromptForSessionId();
+            var codingSession = _dao.GetItemById(id);
+            if (codingSession is null)
+            {
+                DisplayMessage($"Coding Session With ID {id} not found\nAborting process", Color.Red);
+            }
+            return codingSession;
+        }
+
+        private CodingSession PromptForNewSession()
+        {
+            bool useStopwatch = AnsiConsole.Confirm("Use stopwatch to track current session in real time?");
+            var codingSession = _userInput.GetUserCodingSession(useStopwatch);
+            return codingSession;
         }
 
         private void UpdateSession()
@@ -151,9 +160,7 @@ namespace CodingTracker.Kunikazu723.UserLand
         {
             WriteBanner(Color.Yellow, "Log Session");
 
-            bool useStopwatch = AnsiConsole.Confirm("Use stopwatch to track current session in real time?");
-
-            var codingSession = _userInput.GetUserCodingSession(useStopwatch);
+            var codingSession = PromptForNewSession();
 
             var toBeInsertedDisplay = _tableEngine.GenerateCodingSessionsTable(new List<CodingSession>() { codingSession }, "To Be Inserted");
             AnsiConsole.Write(toBeInsertedDisplay);
