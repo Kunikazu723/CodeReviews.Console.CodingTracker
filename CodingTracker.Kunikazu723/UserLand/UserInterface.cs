@@ -237,7 +237,9 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         public void WriteBanner(Color color, string bannerText = "CODING TRACKER")
         {
-            var figletFont = FigletFont.Load("./FigletFonts/smkeyboard.flf");
+            var fontPath = Path.Combine(AppContext.BaseDirectory, "FigletFonts", "smkeyboard.flf");
+            var figletFont = FigletFont.Load(fontPath);
+
             var appFiglet = new FigletText(figletFont, bannerText)
                 .Color(color);
 
