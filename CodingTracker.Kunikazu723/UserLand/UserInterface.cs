@@ -173,11 +173,19 @@ namespace CodingTracker.Kunikazu723.UserLand
 
         private void ViewSessions()
         {
-            var doApplyFilter = AnsiConsole.Confirm("[bold yellow]Apply Filter?[/]", false);
+            var doApplyFilter = AnsiConsole.Confirm("[bold yellow]Apply Filter to view all coding sessions?[/]", false);
             var codingSessions = _dao.GetAllItems().OrderBy(codingSession => codingSession.StartTime).ToList();
             if (doApplyFilter)
             {
                 codingSessions = FilterCodingSessions(codingSessions);
+            }
+
+            if (codingSessions.Count == 0)
+            {
+                AnsiConsole.Write(new Panel("[bold red]No Coding Sessions available[/]")
+                    .RoundedBorder()
+                    .BorderColor(Color.Yellow));
+                return;
             }
 
             var sessionsTable = _tableEngine.GenerateCodingSessionsTable(codingSessions, "Coding Sessions");
@@ -205,6 +213,9 @@ namespace CodingTracker.Kunikazu723.UserLand
             var filteredCodingSessions = codingSessions
                 .Where(codingSession => codingSession.StartTime >= lowestDate);
 
+            if (filteredCodingSessions.Any() == false)
+                return filteredCodingSessions.ToList();
+            
             var filterOrder = _userInput.PromptUserEnumOption<FilterOrder>("[bold yellow]Select Order[/]");
 
             filteredCodingSessions = filterOrder switch
